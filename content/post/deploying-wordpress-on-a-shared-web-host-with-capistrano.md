@@ -157,14 +157,23 @@ I found \[a thread on GitHub\]([https://github.com/capistrano/capistrano/issues/
 > _the issue might be the /tmp folder in your deployment machine does not have enough permission to run the script, change the folder /tmp folder to something else ..._
 
   
-With this clue, I specified the Capistrano variable, \`:tmp_dir\`, which tells Capistrano to use a path to which my limited-scope, shared host user can write.  
-\`\`\`rubyset :tmp_dir, -> {"#{fetch(:deploy_to)}/tmp"}\`\`\`  
-\### Setting the public_html symlink  
-By default on the shared web host, the \`public_html\` symlink will point to the wrong level in the \`current\` release; it needs to point to \`web\`.  
-It is very __**important that you point public_html to current/web**__ to avoid exposing your \`.env\` file to the public!  
-If this deployment were _*not*_ on a shared web host, this would be as simple as editing the Apache \`DocumentRoot\` or something similar.  
-In this case, though, a custom \`deploy.rb\` task will be used: see \[roots/bedrock issue #76\]([https://github.com/roots/bedrock/issues/76](https://stackoverflow.com/a/44391850/12621376 "https://stackoverflow.com/a/44391850/12621376")). The task was originally written by GitHub user Pier-Philip and updated by roots dev swalkinshaw.  
-However, if you want to have two different \`public_html\` locations, one for staging, and one for production, you might want to set the \`public_html\` symlink location in \`config/staging.rb\` and \`config/production.rb\`, respectively.  
+With this clue, I specified the Capistrano variable, \`:tmp_dir\`, which tells Capistrano to use a path to which my limited-scope, shared host user can write.
+
+    rubyset :tmp_dir, -> {"#{fetch(:deploy_to)}/tmp"}
+
+###   
+Setting the public_html symlink
+
+  
+By default on the shared web host, the \`public_html\` symlink will point to the wrong level in the \`current\` release; it needs to point to \`web\`.
+
+  
+It is very __**important that you point public_html to current/web**__ to avoid exposing your .env file to the public!  
+If this deployment were _*not*_ on a shared web host, this would be as simple as editing the Apache \`DocumentRoot\` or something similar.
+
+  
+In this case, though, a custom `deploy.rb` task will be used: see \[roots/bedrock issue #76\]([https://github.com/roots/bedrock/issues/76](https://stackoverflow.com/a/44391850/12621376 "https://stackoverflow.com/a/44391850/12621376")). The task was originally written by GitHub user Pier-Philip and updated by roots dev swalkinshaw.  
+However, if you want to have two different `public_html` locations, one for staging, and one for production, you might want to set the \`public_html symlink location in \`config/staging.rb\` and \`config/production.rb\`, respectively.  
 Here is a gist which I wrote up, which only shows a portion of a full \`deploy.rb\` file. Normally, I keep \`:deploy_to\` and \`:public_symlink_location\` separate in stage-specific locations.  
 {{< gist hdevilbiss 3f6b735fd9037a519171ab49126861f4 >}}  
 The execute statement in \`:release_public_html\` will remove the \`public_html\` directory recursively and forcefully. Then, it will create a symbolic link to the most current release public folder, \`current/web\`.  
