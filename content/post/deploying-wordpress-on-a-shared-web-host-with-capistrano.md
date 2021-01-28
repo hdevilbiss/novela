@@ -152,7 +152,7 @@ When running `deploy:check`, I was having issues with the `.sh` file check in th
     rubycap aborted!SSHKit::Runner::ExecuteError: Exception while executing as USER@example.com: git exit status: 128git stdout: Nothing writtengit stderr: fatal: cannot exec '/tmp/git-ssh-APPLICATION-STAGE-MYNAME.sh': Permission deniedfatal: cannot exec '/tmp/git-ssh-APPLICATION-STAGE-MYNAME.sh': Permission deniedfatal: unable to fork
 
   
-I found \[a thread on GitHub\]([https://github.com/capistrano/capistrano/issues/687#issuecomment-35419084](https://stackoverflow.com/a/44391850/12621376 "https://stackoverflow.com/a/44391850/12621376")) in which user bbiglari suggested 
+I found \[a thread on GitHub\]([https://github.com/capistrano/capistrano/issues/687#issuecomment-35419084](https://stackoverflow.com/a/44391850/12621376 "https://stackoverflow.com/a/44391850/12621376")) in which user bbiglari suggested a permissions issue.
 
 > _the issue might be the /tmp folder in your deployment machine does not have enough permission to run the script, change the folder /tmp folder to something else ..._
 
