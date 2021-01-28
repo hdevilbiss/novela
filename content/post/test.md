@@ -1,7 +1,6 @@
 +++
 authors = []
 date = ""
-draft = true
 excerpt = "Test test test"
 hero = ""
 timeToRead = 0
