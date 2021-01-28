@@ -40,3 +40,5 @@ fields:
   type: tag_list
   default: []
   label: Authors
+pages:
+- content/post/deploying-wordpress-on-a-shared-web-host-with-capistrano.md
