@@ -179,8 +179,12 @@ Here is a gist which I wrote up, which only shows a portion of a full \`deploy.r
 The execute statement in \`:release_public_html\` will remove the \`public_html\` directory recursively and forcefully. Then, it will create a symbolic link to the most current release public folder, \`current/web\`.  
 This custom task gets hooked in after shared symlinks are made.  
 \### Don't forget about Composer!  
-Don't forget to uncomment this line in your \`Capfile\` to make sure that \`composer install\` runs during your deployment! This is very important for roots/bedrock because WordPress is installed as a Composer dependency.  
-\`\`\`ruby_# Custom tasks# composer:install task will run before deploy:updated hook_require "capistrano/composer"\`\`\`  
+Don't forget to uncomment this line in your \`Capfile\` to make sure that \`composer install\` runs during your deployment! This is very important for roots/bedrock because WordPress is installed as a Composer dependency.
+
+  
+ruby_# Custom tasks# composer:install task will run before deploy:updated hook_require "capistrano/composer"
+
+  
 \#### A side note about composer install vs update  
 During manual deployment, I made this mistake a few times, and so wanted to mention it.  
 When running \`git clone\` or \`git pull\`, I would accidentally run \`composer update\` instead of \`composer install\` to update dependencies.  
