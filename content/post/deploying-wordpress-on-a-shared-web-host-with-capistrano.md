@@ -13,9 +13,7 @@ I was inspired by the [tutorial on YouTube](https://www.youtube.com/watch?v=HwJZ
 
 Please note that this information is provided as-is. It is up to you to use your SSH and database credentials wisely.
 
-### 
-
-Necessary Deployment Tasks
+### Necessary Deployment Tasks
 
 * Know the stage of the deployment: development, staging, or production.
 * Identify the correct server, user, and port.- Be able to SSH into the server with the user’s private key (\`id_rsa\`) and private key passphrase, without prompt.
@@ -27,9 +25,7 @@ Necessary Deployment Tasks
 * Auto-symlink shared files and directories, such as the WordPress \`uploads\` folder, between deployments.- Remove old releases.
 * Rollback to a previous release from a current release.- Do deployment or rollback using only one line of code in the command line.
 
-### 
-
-Assumptions for Web Host
+#### Assumptions for Web Host
 
 These tools are required to be used by the remote web host. Linux command line (Capistrano tasks written for Linux)- Web server; e.g, Apache, nginx, LiteSpeed
 
@@ -39,9 +35,7 @@ These tools are required to be used by the remote web host. Linux command line (
 * Composer
 * WP-CLI
 
-### 
-
-Assumptions for Local Dev Machine
+#### Assumptions for Local Dev Machine
 
 * Ruby
 * Bundler
@@ -49,21 +43,15 @@ Assumptions for Local Dev Machine
 * Capistrano
 * Composer (via Gemfile)
 
-### 
-
-Assumptions for Git Repo
+#### Assumptions for Git Repo
 
 A \[bedrock project\]([https://roots.io/bedrock/](https://roots.io/bedrock/ "https://roots.io/bedrock/")) which handles a \[subdirectory installation\]([https://wordpress.org/support/article/giving-wordpress-its-own-directory/](https://wordpress.org/support/article/giving-wordpress-its-own-directory/ "https://wordpress.org/support/article/giving-wordpress-its-own-directory/")) automatically using `Composer`.
 
-### 
-
-Official Documentation
+#### Official Capistrano Documentation
 
 The official documentation for \[Capistrano\]([https://capistranorb.com/](https://capistranorb.com/ "https://capistranorb.com/")) and the \[README from roots\]([https://github.com/roots/bedrock-capistrano](https://github.com/roots/bedrock-capistrano "https://github.com/roots/bedrock-capistrano")) will certainly be clearer documentation than this here. However, I wanted to touch on the some of the **roadblocks** which I encountered during my first deployment. I really hope that my rephrasing will help someone else along the way.
 
-### 
-
-Setting up SSH Keys
+### Setting up SSH Keys
 
 To avoid needing to enter SSH key passphrases during deployment, let's use an agent to remember it: \[Git Bash\]([https://gitforwindows.org/](https://gitforwindows.org/ "https://gitforwindows.org/")) or \[Pageant\]([https://www.chiark.greenend.org.uk/\~sgtatham/putty/latest.html](https://www.chiark.greenend.org.uk/\~sgtatham/putty/latest.html "https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html")), for examples.
 
