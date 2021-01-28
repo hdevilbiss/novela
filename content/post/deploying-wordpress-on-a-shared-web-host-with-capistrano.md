@@ -53,7 +53,7 @@ The official documentation for \[Capistrano\]([https://capistranorb.com/](https:
 
 ### Setting up SSH Keys
 
-To avoid needing to enter SSH key passphrases during deployment, let's use an agent to remember it: \[Git Bash\]([https://gitforwindows.org/](https://gitforwindows.org/ "https://gitforwindows.org/")) or \[Pageant\]([https://www.chiark.greenend.org.uk/\~sgtatham/putty/latest.html](https://www.chiark.greenend.org.uk/\~sgtatham/putty/latest.html "https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html")), for examples.
+To avoid needing to enter SSH key passphrases during deployment, let's use an agent to remember it: [Git Bash](https://gitforwindows.org/ "Git Bash") or [Pageant](https://www.chiark.greenend.org.uk/\~sgtatham/putty/latest.html "Pageant"), for examples.
 
 I will quickly go through the steps to adding a private key and its passphrase to the agent. But first, If you have not done so already, generate a key pair; e.g., using PuTTYGen.
 
