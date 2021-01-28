@@ -69,7 +69,7 @@ Assumptions for Local Dev Machine
 Assumptions for Git Repo
 
   
-\- It's \[bedrock project\]([https://roots.io/bedrock/](https://roots.io/bedrock/ "https://roots.io/bedrock/")) which handles a \[subdirectory installation\]([https://wordpress.org/support/article/giving-wordpress-its-own-directory/](https://wordpress.org/support/article/giving-wordpress-its-own-directory/ "https://wordpress.org/support/article/giving-wordpress-its-own-directory/")) automatically using \`Composer\`
+A \[bedrock project\]([https://roots.io/bedrock/](https://roots.io/bedrock/ "https://roots.io/bedrock/")) which handles a \[subdirectory installation\]([https://wordpress.org/support/article/giving-wordpress-its-own-directory/](https://wordpress.org/support/article/giving-wordpress-its-own-directory/ "https://wordpress.org/support/article/giving-wordpress-its-own-directory/")) automatically using `Composer`.
 
 ###   
 Official Documentation
@@ -88,47 +88,69 @@ I will quickly go through the steps to adding a private key and its passphrase t
 
   
 Upload the public key on one line to your remote server; double-check with your web host where it needs to go. Most likely, it will need to be in the `~/.ssh/authorized_keys` file.  
-Make sure that your public key is only one 1 line of code! For whatever reason, mine kept copying over as 6-7 lines.
+Make sure that your public key is only one 1 line of code! For whatever reason, mine kept copying over as 6 to 7 lines.
 
 ####   
 Pageant
 
-  
-\- Open Pageant and click "Add Key".  
-\- Navigate to your `.ppk` private key, and enter the private key passphrase when prompted.  
+* Open Pageant and click "Add Key".
+* Navigate to your `.ppk` private key, and enter the private key passphrase when prompted.
+
 Pageant will remember your private key and passphrase for as long as you do not shut down or restart your computer.  
-You can add Pageant to the list of Windows startup tasks and add your private key whenever you start your day.  
-Now, when you load your PuTTY SSH, SFTP, or remote SSH MySQL connection, you will not need to enter any passphrases.
+You can add Pageant to the list of Windows startup tasks and add your private key whenever you start your day.
+
+  
+After adding your  when you load your PuTTY SSH, SFTP, or remote SSH MySQL connection, you will not need to enter any passphrases.
 
 #### Git Bash
 
   
 Open Git Bash. Start the SSH agent:  
-\``val "$(ssh-agent -s)"``
+`val "$(ssh-agent -s)"`
 
   
 List identities (there should be none):  
-\``sh-add -l``
+`sh-add -l`
 
   
 Try to add your key to the Git Bash agent:  
-\``sh-add path/to/privatekey``
+`sh-add path/to/privatekey`
 
   
 If you used PuTTYGen to make your key-pair, may receive an error, “invalid file format”.
 
   
-To fix this, convert the \``ppk`` private key to an OpenSSH format, as suggested by \[this answer\]([https://stackoverflow.com/a/44391850/12621376](https://stackoverflow.com/a/44391850/12621376 "https://stackoverflow.com/a/44391850/12621376")) from samthecodingman on Stack Overflow.  
-Open PuTTYgen, load the private key, and enter the private key passphrase. Next, click Conversions > Export OpenSSH Key. Save this file as \`id_rsa\` without any file extension.   
-Now, save the private key – passphrase identity in the SSH agent.  
-\`ssh-add path/to/id_rsa\`  
-You can check that it was added.  
-\`ssh-add -l\`  
-Please note that you must do this every time you boot up your computer. After restarting your computer, running \`ssh-add -l\`, will show no identities.  
-To make the SSH agent start automatically, add \[this code from GitHub\]([https://docs.github.com/en/github/authenticating-to-github/working-with-ssh-key-passphrases#auto-launching-ssh-agent-on-git-for-windows](https://stackoverflow.com/a/44391850/12621376 "https://stackoverflow.com/a/44391850/12621376")) to the \`.bashrc\` or \`.profile\` file located at the Git installation folder; e.g., \`D:\\Git\\etc\\bash.bashrc\`. I understand that you will still need to add your key every day when you boot up.  
-\### Lesson Learned: \`/tmp/\` folder File Permissions on the Server  
-When running \`deploy:check\`, I was having issues with the \`.sh\` file check in the \`/tmp/\` folder.  
-\`\`\`rubycap aborted!SSHKit::Runner::ExecuteError: Exception _while_ executing as USER@example.com: git exit status: 128git stdout: Nothing writtengit stderr: fatal: cannot exec '/tmp/git-ssh-APPLICATION-STAGE-MYNAME.sh': Permission deniedfatal: cannot exec '/tmp/git-ssh-APPLICATION-STAGE-MYNAME.sh': Permission deniedfatal: unable to fork\`\`\`  
+To fix this, convert the `ppk` private key to an OpenSSH format, as suggested by \[this answer\]([https://stackoverflow.com/a/44391850/12621376](https://stackoverflow.com/a/44391850/12621376 "https://stackoverflow.com/a/44391850/12621376")) from samthecodingman on Stack Overflow.
+
+  
+Open PuTTYgen, load the private key, and enter the private key passphrase. Next, click Conversions > Export OpenSSH Key. Save this file as `id_rsa` without any file extension. Now, save the private key – passphrase identity in the SSH agent.
+
+  
+`sh-add path/to/id_rsa`
+
+  
+You can check that it was added.
+
+  
+`sh-add -l`
+
+Please note that you must do this every time you boot up your computer. After restarting your computer, running `ssh-add -l`, will show no identities.
+
+  
+To make the SSH agent start automatically, add \[this code from GitHub\]([https://docs.github.com/en/github/authenticating-to-github/working-with-ssh-key-passphrases#auto-launching-ssh-agent-on-git-for-windows](https://stackoverflow.com/a/44391850/12621376 "https://stackoverflow.com/a/44391850/12621376")) to the `.bashrc` or `.profile` file located at the Git installation folder; e.g., `D:\Git\etc\bash.bashrc`
+
+I understand that you will still need to add your key every day when you boot up.
+
+###   
+Lesson Learned about temporary folder
+
+#### `/tmp/` folder File Permissions on the Server
+
+  
+When running `deploy:check`, I was having issues with the `.sh` file check in the `/tmp/` folder.
+
+    rubycap aborted!SSHKit::Runner::ExecuteError: Exception while executing as USER@example.com: git exit status: 128git stdout: Nothing writtengit stderr: fatal: cannot exec '/tmp/git-ssh-APPLICATION-STAGE-MYNAME.sh': Permission deniedfatal: cannot exec '/tmp/git-ssh-APPLICATION-STAGE-MYNAME.sh': Permission deniedfatal: unable to fork
+
 I found \[this thread on GitHub\]([https://github.com/capistrano/capistrano/issues/687#issuecomment-35419084](https://stackoverflow.com/a/44391850/12621376 "https://stackoverflow.com/a/44391850/12621376")) in which user bbiglari suggested   
 _> the issue might be the /tmp folder in your deployment machine does not have enough permission to run the script, change the folder /tmp folder to something else ..._  
 With this clue, I specified the Capistrano variable, \`:tmp_dir\`, which tells Capistrano to use a path to which my limited-scope, shared host user can write.  
