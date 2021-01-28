@@ -18,24 +18,15 @@ Please note that this information is provided as-is. It is up to you to use your
 ###   
 Necessary Deployment Tasks
 
-  
-\- Know the stage of the deployment: development, staging, or production.
-
-\- Identify the correct server, user, and port.- Be able to SSH into the server with the user’s private key (\`id_rsa\`) and private key passphrase, without prompt.
-
-\- Know the value for \`:release_path\`, \`:shared_path\`, and \`:linked_dirs\`, among other Capistrano parameters.
-
-\- Know the origin Git repository and be able to deploy from it via SSH, HTTPS, or deploy key, without prompt.
-
-\- Run \`composer install\` (and other package manager tasks).
-
-\- Create a symlink for \`public_html\`, to point to the latest release folder. This is required when on a shared web host, since the host's \`DocumentRoot\` cannot be altered by the non-root user.
-
-\- Symlink the \`.htaccess\` file between releases to maintain SSL, caching, and/or password-protection settings.
-
-\- Auto-symlink shared files and directories, such as the WordPress \`uploads\` folder, between deployments.- Remove old releases.
-
-\- Rollback to a previous release from a current release.- Do deployment or rollback using only one line of code in the command line.
+* Know the stage of the deployment: development, staging, or production.
+* Identify the correct server, user, and port.- Be able to SSH into the server with the user’s private key (\`id_rsa\`) and private key passphrase, without prompt.
+* Know the value for \`:release_path\`, \`:shared_path\`, and \`:linked_dirs\`, among other Capistrano parameters.
+* Know the origin Git repository and be able to deploy from it via SSH, HTTPS, or deploy key, without prompt.
+* Run \`composer install\` (and other package manager tasks).
+* Create a symlink for \``public_html``, to point to the latest release folder. This is required when on a shared web host, since the host's \`DocumentRoot\` cannot be altered by the non-root user.
+* - Symlink the \`.htaccess\` file between releases to maintain SSL, caching, and/or password-protection settings.
+* - Auto-symlink shared files and directories, such as the WordPress \`uploads\` folder, between deployments.- Remove old releases.
+* - Rollback to a previous release from a current release.- Do deployment or rollback using only one line of code in the command line.
 
 ###   
 Assumptions for Web Host
