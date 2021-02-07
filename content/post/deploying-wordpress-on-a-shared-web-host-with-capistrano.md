@@ -2,7 +2,7 @@
 authors = []
 date = 2021-01-27T05:00:00Z
 excerpt = "No more cowboy coding - Deploy your WordPress website from Git to a shared web host using Ruby Gem Capistrano"
-hero = "/images/deployrb.jpg"
+hero = "/images/content/deployrb.jpg"
 timeToRead = 7
 title = "Deploying WordPress on a Shared Web Host with Capistrano"
 
@@ -14,10 +14,13 @@ I was inspired by the [tutorial on YouTube](https://www.youtube.com/watch?v=HwJZ
 
 Please note that this information is provided as-is. It is up to you to use your SSH and database credentials wisely.
 
+Edit 2021: I have added on content to use OpenSSH in PowerShell in Windows 10.
+
 ### Necessary Deployment Tasks
 
 * Know the stage of the deployment: development, staging, or production.
-* Identify the correct server, user, and port* Be able to SSH into the server with the user’s private key (`id_rsa`) and private key passphrase, without prompt.
+* Identify the correct server, user, and port.
+* Be able to SSH into the server with the user’s private key (`id_rsa`) and private key passphrase, without prompt.
 * Know the value for `:release_path`, `:shared_path`, and `:linked_dirs`, among other Capistrano parameters.
 * Know the origin Git repository and be able to deploy from it via SSH, HTTPS, or deploy key, without prompt.
 * Run `composer install` (and other package manager tasks).
@@ -75,13 +78,13 @@ After adding your  when you load your PuTTY SSH, SFTP, or remote SSH MySQL conne
 #### Git Bash
 
 Open Git Bash. Start the SSH agent:  
-`val "$(ssh-agent -s)"`
+`eval "$(ssh-agent -s)"`
 
 List identities (there should be none):  
-`sh-add -l`
+`ssh-add -l`
 
 Try to add your key to the Git Bash agent:  
-`sh-add path/to/privatekey`
+`ssh-add path/to/privatekey`
 
 If you used PuTTYGen to make your key-pair, may receive an error, “invalid file format”.
 
@@ -89,11 +92,11 @@ To fix this, convert the `ppk` private key to an OpenSSH format, as suggested by
 
 Open PuTTYgen, load the private key, and enter the private key passphrase. Next, click Conversions > Export OpenSSH Key. Save this file as `id_rsa` without any file extension. Now, save the private key – passphrase identity in the SSH agent.
 
-`sh-add path/to/id_rsa`
+`ssh-add path/to/id_rsa`
 
 You can check that it was added.
 
-`sh-add -l`
+`ssh-add -l`
 
 Please note that you must do this every time you boot up your computer. After restarting your computer, running `ssh-add -l`, will show no identities.
 
@@ -101,15 +104,21 @@ To make the SSH agent start automatically, add [this code from GitHub](https://d
 
 I understand that you will still need to add your key every day when you boot up.
 
-### 
+#### OpenSSH on Windows 10
 
-Lesson Learned about temporary folder
+Per a [Stack Overflow answer](https://stackoverflow.com/a/40720527/12621376) given by user tamj0rd2, Windows 10 has an SSH agent baked into it.
 
-#### `/tmp/` folder File Permissions on the Server
+This is my preferred option because it does not require me to reboot the SSH client and re-enter my private key every time that my computer starts up.
+
+1. Click on the start menu icon and type in `Manage optional features` and search for `OpenSSH Client` just to confirm it's there.
+1. Click on the start menu icon and type `Services`; scroll down to `OpenSSH Authentication Agent` to make sure it's not disabled.
+1. The commands `ssh-agent` and `ssh-add` should now work within the PowerShell terminal.
+
+### Lesson Learned about temporary folder
 
 When running `deploy:check`, I was having issues with the `.sh` file check in the `/tmp/` folder.
 
-```
+```shell
 rubycap aborted!SSHKit::Runner::ExecuteError: Exception while executing as USER@example.com: git exit status: 128git stdout: Nothing writtengit stderr: fatal: cannot exec '/tmp/git-ssh-APPLICATION-STAGE-MYNAME.sh': Permission deniedfatal: cannot exec '/tmp/git-ssh-APPLICATION-STAGE-MYNAME.sh': Permission deniedfatal: unable to fork
 ```
 
@@ -127,21 +136,61 @@ rubyset :tmp_dir, -> {"#{fetch(:deploy_to)}/tmp"}
 
 By default on the shared web host, the `public_html` symlink will point to the wrong level in the `current` release; it needs to point to `web`.
 
-It is very **important that you point public_html to current/web** to avoid exposing your `.env` file to the public!  
+It is very **important that you point public_html to current/web** to avoid exposing your `.env` file to the public!
+
 If this deployment were _not_ on a shared web host, this would be as simple as editing the Apache `DocumentRoot` or something similar.
 
-In this case, though, a custom `deploy.rb` task will be used: see [roots/bedrock issue #76](https://github.com/roots/bedrock/issues/76). The task was originally written by GitHub user Pier-Philip and updated by roots dev swalkinshaw.  
-However, if you want to have two different `public_html` locations, one for staging, and one for production, you might want to set the `public_html symlink location in `config/staging.rb` and `config/production.rb`, respectively.  
-Here is a gist which I wrote up, which only shows a portion of a full `deploy.rb` file. Normally, I keep `:deploy_to` and `:public_symlink_location` separate in stage-specific locations.  
-{{< gist hdevilbiss 3f6b735fd9037a519171ab49126861f4 >}}  
-The execute statement in `:release_public_html` will remove the `public_html` directory recursively and forcefully. Then, it will create a symbolic link to the most current release public folder, `current/web`.  
+In this case, though, a custom `deploy.rb` task will be used: see [roots/bedrock issue #76](https://github.com/roots/bedrock/issues/76). The task was originally written by GitHub user Pier-Philip and updated by roots dev swalkinshaw. 
+
+However, if you want to have two different `public_html` locations, one for staging, and one for production, you might want to set the `public_html symlink location in `config/staging.rb` and `config/production.rb`, respectively.
+
+Here is a gist which I wrote up, which only shows a portion of a full `deploy.rb` file. Normally, I keep `:deploy_to` and `:public_symlink_location` separate in stage-specific locations.
+
+{{< gist hdevilbiss 3f6b735fd9037a519171ab49126861f4 >}}
+
+The execute statement in `:release_public_html` will remove the `public_html` directory recursively and forcefully. Then, it will create a symbolic link to the most current release public folder, `current/web`.
 This custom task gets hooked in after shared symlinks are made.  
 
 ### Don't forget about Composer!
 
 Don't forget to uncomment this line in your `Capfile` to make sure that `composer install` runs during your deployment! This is very important for roots/bedrock because WordPress is installed as a Composer dependency.
 
-ruby_# Custom tasks# composer:install task will run before deploy:updated hook_require "capistrano/composer"
+**Capfile**
+
+```ruby
+require 'capistrano/composer'
+```
+
+### Installing a Private Composer Repository on a Remote Server
+
+Here was another roadblock that I encountered when trying to use Composer on a remote server to install WordPress plugin from my private Git repository. Composer was unable to clone the remote.
+
+```shell
+composer Failed to execute git clone --no-checkout
+```
+
+#### Generate a Personal Access Token
+
+This error message was happening, even though my local machine SSH agent was forwarding the SSH credentials for my Git profile to the remote server. I was able to manually clone the repository on both HTTPS and SSH; nonetheless, when it came down to it, Composer didn't know what to do with this information.
+
+On the [Roots discourse discussion](https://discourse.roots.io/t/private-or-commercial-wordpress-plugins-as-composer-dependencies/13247/16?u=shed-00) for the "Private or Commercial WordPress Plugins as Composer Dependencies" blog post, someone linked this section of the [Composer docs for GitHub oAuth](https://getcomposer.org/doc/06-config.md#github-oauth), which ended up being extremely helpful, though it took me a couple days to figure it out properly.
+
+First, I generated a Personal Access Token for my GitHub account. However, at this point, I did not want to include this information in the repository. Finally, I realized that my remote server was already configured with a `~/.composer/auth.json` file, in which it had a section for github-oauth.
+
+So I pasted my personal access token - accidentally into gitlab-oauth, which was annoying to debug - and... Still received the error when deploying. Why?
+
+My GitHub username had changed, so I had to reconfigure it on the remote server in `.gitconfig`. 
+
+Finally, success! Capistrano was able to use Composer to install a private GitHub repository! ... but then I received an e-mail from GitHub entitled, "[GitHub API] Deprecation notice for authentication via URL query parameters".
+
+The solution was to update Composer on the remote server by installing a local copy of Composer and rewriting the "composer" alias in the Bash `.profile`.
+
+#### Summarizing
+
+1. You can configure your remote server with a Personal Access Token to Composer install your private repositories.
+1. You can install this Personal Access Token into `composer.json`, but you can add it to an `~/.composer/auth.json` file on your remote server.
+1. Your GitHub username should be correctly set on your remote server in `.gitconfig`.
+1. When authenticating with URL query parameters, you should be using at least Composer version 1.9.3 on your remote server to avoid a deprecation notice from GitHub.
 
 #### A side note about composer install vs update
 
