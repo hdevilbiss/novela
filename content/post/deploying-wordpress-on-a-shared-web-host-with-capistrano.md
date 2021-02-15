@@ -14,8 +14,6 @@ I was inspired by the [tutorial on YouTube](https://www.youtube.com/watch?v=HwJZ
 
 Please note that this information is provided as-is. It is up to you to use your SSH and database credentials wisely.
 
-Edit 2021: I have added on content to use OpenSSH in PowerShell in Windows 10.
-
 ### Necessary Deployment Tasks
 
 * Know the stage of the deployment: development, staging, or production.
@@ -51,7 +49,7 @@ These tools are required to be used by the remote web host. Linux command line (
 
 #### Assumptions for Git Repo
 
-A [bedrock project]([https://roots.io/bedrock/](https://roots.io/bedrock/ "https://roots.io/bedrock/")) which handles a [subdirectory installation]([https://wordpress.org/support/article/giving-wordpress-its-own-directory/](https://wordpress.org/support/article/giving-wordpress-its-own-directory/ "https://wordpress.org/support/article/giving-wordpress-its-own-directory/")) automatically using `Composer`.
+A [bedrock project]([https://roots.io/bedrock/](https://roots.io/bedrock/ "https://roots.io/bedrock/") which handles a [subdirectory installation](https://wordpress.org/support/article/giving-wordpress-its-own-directory/) of WordPress automatically using `Composer`.
 
 #### Official Capistrano Documentation
 
@@ -63,7 +61,8 @@ To avoid needing to enter SSH key passphrases during deployment, let's use an ag
 
 I will quickly go through the steps to adding a private key and its passphrase to the agent. But first, If you have not done so already, generate a key pair; e.g., using PuTTYGen.
 
-Upload the public key on one line to your remote server; double-check with your web host where it needs to go. Most likely, it will need to be in the `~/.ssh/authorized_keys` file.  
+Upload the public key on one line to your remote server; double-check with your web host where it needs to go. Most likely, it will need to be in the `~/.ssh/authorized_keys` file.
+
 Make sure that your public key is only one 1 line of code! For whatever reason, mine kept copying over as 6 to 7 lines.
 
 #### Pageant
@@ -100,19 +99,13 @@ You can check that it was added.
 
 Please note that you must do this every time you boot up your computer. After restarting your computer, running `ssh-add -l`, will show no identities.
 
-To make the SSH agent start automatically, add [this code from GitHub](https://docs.github.com/en/github/authenticating-to-github/working-with-ssh-key-passphrases#auto-launching-ssh-agent-on-git-for-windows) to the `.bashrc` or `.profile` file located at the Git installation folder; e.g., `D:\Git\etc\bash.bashrc`
+To make the SSH agent start automatically, add [this code from GitHub](https://docs.github.com/en/github/authenticating-to-github/working-with-ssh-key-passphrases#auto-launching-ssh-agent-on-git-for-windows) to the `.bashrc` or `.profile` file located at the Git installation folder; e.g., `D:\Git\etc\bash.bashrc`.
+
+As I understand, the difference between the two Bash configs is that `.profile` is applicable for non-interactive shells, such as those created by Capistrano when deploying.
+
+On the other hand, `.bashrc` is meant for interactive shells, such as those that you manually launch using PuTTY.
 
 I understand that you will still need to add your key every day when you boot up.
-
-#### OpenSSH on Windows 10
-
-Per a [Stack Overflow answer](https://stackoverflow.com/a/40720527/12621376) given by user tamj0rd2, Windows 10 has an SSH agent baked into it.
-
-This is my preferred option because it does not require me to reboot the SSH client and re-enter my private key every time that my computer starts up.
-
-1. Click on the start menu icon and type in `Manage optional features` and search for `OpenSSH Client` just to confirm it's there.
-1. Click on the start menu icon and type `Services`; scroll down to `OpenSSH Authentication Agent` to make sure it's not disabled.
-1. The commands `ssh-agent` and `ssh-add` should now work within the PowerShell terminal.
 
 ### Lesson Learned about temporary folder
 
@@ -144,7 +137,7 @@ In this case, though, a custom `deploy.rb` task will be used: see [roots/bedrock
 
 However, if you want to have two different `public_html` locations, one for staging, and one for production, you might want to set the `public_html symlink location in `config/staging.rb` and `config/production.rb`, respectively.
 
-Here is a gist which I wrote up, which only shows a portion of a full `deploy.rb` file. Normally, I keep `:deploy_to` and `:public_symlink_location` separate in stage-specific locations.
+Here is a gist which only shows a portion of a full `deploy.rb` file. Normally, I keep `:deploy_to` and `:public_symlink_location` separate in stage-specific locations.
 
 {{< gist hdevilbiss 3f6b735fd9037a519171ab49126861f4 >}}
 
@@ -194,10 +187,14 @@ The solution was to update Composer on the remote server by installing a local c
 
 #### A side note about composer install vs update
 
-During manual deployment, I made this mistake a few times, and so wanted to mention it.  
-When running `git clone` or `git pull`, I would accidentally run `composer update` instead of `composer install` to update dependencies.  
-The difference between these Composer commands is that `composer update` will reference the `composer.json` file, and update the `composer.lock` file accordingly. This means there will be a merge conflict between your Git repo and your local installation.  
-You must use `composer install` instead, which will reference the `composer.lock` file.  
+During manual deployment, I made this mistake a few times, and so wanted to mention it.
+
+When running `git clone` or `git pull`, I would accidentally run `composer update` instead of `composer install` to update dependencies.
+
+The difference between these Composer commands is that `composer update` will reference the `composer.json` file, and update the `composer.lock` file accordingly. This means there will be a merge conflict between your Git repo and your local installation.
+
+You must use `composer install` instead, which will reference the `composer.lock` file.
+
 Thankfully, the `capistrano/composer` gem will handle this step automatically.
 
 ### Workflow summarized  
