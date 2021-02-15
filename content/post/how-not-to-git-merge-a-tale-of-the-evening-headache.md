@@ -3,21 +3,15 @@ authors = []
 date = 2021-02-07T05:00:00Z
 excerpt = "Build test site, ignore test site, git merge, find white screen of death on production, git revert, missings commits, merge hotfix, git revert revert, what just happened"
 hero = "/images/how-not-to-run-a-pull-request.jpg"
-timeToRead = 0
+timeToRead = 3
 title = "How Not to Git Merge: A Tale of the Evening Headache"
 
 +++
-I don't know who else has done it: a hasty merge commit into your production branch. This may build assets that cause a white screen of death on your live site. Perhaps you used a spread operator (`...`) in JavaScript without trans-piling it?
+I don't know who else has done it, but I sure did it: a hasty merge commit into the production branch of a live app, without looking at the preview site, building public-facing assets that caused a white screen of death on your live site. 
 
-Perhaps, to rectify your horrifying mistake, you performed a `git revert` of your merge commit... In which case, I would ask you: _Why have you done this to yourself?_
+Why did it happen? Well, perhaps you used a spread operator (`...`) in JavaScript without trans-piling it?
 
-(...)
-
-Terms
-
-Remote repository = Source code available from a code hosting service, such as GitHub or an internal server.
-
-Repository = A local copy of source code.
+Let's say, to rectify your horrifying mistake, you performed a `git revert` of your merge commit... In which case, I would ask you: _Why have you done this to yourself?_
 
 ## Don't revert your merge
 
@@ -29,7 +23,7 @@ If you revert the merge commit, it will eliminate the document state introduced 
 
 Here is an example of why not to revert a merge commit.
 
-In your development branch, you changed all the buttons from yellow to blue (commit #1), make all the headings bold (commit #2), and added a default value to a function (commit #3). This affects 2 different documents in your repository: `app.scss` and `app.js`. 
+In your development branch, you changed all the buttons from yellow to blue (commit #1), make all the headings bold (commit #2), and added a default value to a function (commit #3). This affects 2 different documents in your repository: `app.scss` and `app.js`.
 
 You're happy with your changes. It runs fine in development. Time to go live! You make a pull request (PR) to add all these changes to your main branch.
 
@@ -37,11 +31,9 @@ You are so confident in your changes, that you don't even preview the test site 
 
 However, you click on your live site, and see a white screen and a console error complaining about "exports".
 
-### Go back to a previous commit instead
+### What to do instead of revert
 
-(...)
-
-I remember reading about it but I cannot paraphrase it from memory.
+[Revert a faulty merge](https://github.com/git/git/blob/master/Documentation/howto/revert-a-faulty-merge.txt "Git revert a fault merge")
 
 ## Fixing a revert of a merge commit
 
@@ -51,7 +43,9 @@ You will have to revert the revert to restore the document states to those intro
 
 `git log` to get the commit hash.
 
-`git revert abc` where `abc` is the commit hash
+`git cherry-pick <original commit sha>` to [reapply the original](https://stackoverflow.com/a/29975312/12621376) commit.
+
+`git revert abc` where `abc` is the commit hash.
 
 ## Never do this again
 
