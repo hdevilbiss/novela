@@ -1,5 +1,5 @@
-module github.com/forestryio/novela-hugo-starter
+module hdevilbiss.github.io/novela
 
 go 1.15
 
-require github.com/forestryio/hugo-theme-novela v0.0.0-20200923124324-608af7f1ee46 // indirect
+require github.com/hdevilbiss/hugo-theme-novela v0.0.0-20210215011650-203b881ef28d // indirect
