@@ -46,6 +46,50 @@ For more information, see [official Hugo documentation](https://gohugo.io/gettin
 
 ## Customization
 
+### Style
+
+#### Initiate a module in your site repository
+
+Create a new module in the repoistory which is your site repository: where the content goes.
+
+`hugo mod init username.github.io/repo`
+
+You could name it after its URL; for example, `username.github.io/repo` or `example.com`.
+
+#### Add theme module to site config
+
+Import the theme module in the site's config file.
+
+Specify a branch by adding `@branch-name` after the repo name.
+
+##### config.toml
+
+```toml
+[module]
+  [[module.imports]]
+    path = "github.com/username/theme-repo"
+```
+
+##### config.yaml
+
+```yaml
+module:
+  imports:
+    - path: "github.com/username/theme-repo"
+```
+
+#### Fetch the latest commit for all modules
+
+`hugo mod get -u`
+
+This command will create or update `go.mod` and `go.sum`.
+
+#### Clean the module caches
+
+Clear the hugo module cache for imports.
+
+`hugo mod clean`
+
 ### Logo
 
 Add to your projects layout directory your logo's SVG:
