@@ -7,7 +7,7 @@ timeToRead = 3
 title = "How Not to Git Merge: A Tale of the Evening Headache"
 
 +++
-I don't know who else has done it, but I sure did it: a hasty merge commit into the production branch of a live app, which built assets that caused a white screen of death on your live site. 
+I don't know who else has done it, but I sure did it: a hasty merge commit into the production branch of a live app, without looking at the preview site, building public-facing assets that caused a white screen of death on your live site. 
 
 Why did it happen? Well, perhaps you used a spread operator (`...`) in JavaScript without trans-piling it?
 
