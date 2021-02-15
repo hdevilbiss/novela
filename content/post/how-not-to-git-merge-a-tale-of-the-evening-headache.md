@@ -31,7 +31,7 @@ You are so confident in your changes, that you don't even preview the test site 
 
 However, you click on your live site, and see a white screen and a console error complaining about "exports".
 
-### What to do instead
+### What to do instead of revert
 
 [Revert a faulty merge](https://github.com/git/git/blob/master/Documentation/howto/revert-a-faulty-merge.txt "Git revert a fault merge")
 
