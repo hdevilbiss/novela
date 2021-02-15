@@ -1,0 +1,48 @@
+blockquote {
+    background-color: #EEE;
+    padding-bottom: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+blockquote::before {
+    content: "\“";
+}
+blockquote p {
+    font-size: 2rem;
+    font-weight: normal;
+}
+code {
+    background-color: #EEE;
+    border-radius: 5px;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+}
+.post-content {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 65ch;
+    text-align: justify;
+}
+.post-content li {
+    margin-bottom: 1rem;
+}
+@media only screen and (max-width: 320px) {
+    .post-content {
+        text-align: left;
+    }
+}
+@media only screen and (max-width: 540px) {
+    .article-header, .article-hero-heading {
+        margin-bottom: 2rem;
+        margin-top: 2rem;
+        padding: 0;
+    }
+    .post-content {
+        padding-top: 3rem;
+    }
+    .section {
+        padding: 1rem;
+    }
+}
