@@ -7,17 +7,11 @@ timeToRead = 3
 title = "How Not to Git Merge: A Tale of the Evening Headache"
 
 +++
-I don't know who else has done it, but I sure did it: a hasty merge commit into the production branch of a live app, which built assets that caused a white screen of death on your live site. Perhaps you used a spread operator (`...`) in JavaScript without trans-piling it?
+I don't know who else has done it, but I sure did it: a hasty merge commit into the production branch of a live app, which built assets that caused a white screen of death on your live site. 
 
-Perhaps, to rectify your horrifying mistake, you performed a `git revert` of your merge commit... In which case, I would ask you: _Why have you done this to yourself?_
+Why did it happen? Well, perhaps you used a spread operator (`...`) in JavaScript without trans-piling it?
 
-(...)
-
-Terms
-
-Remote repository = Source code available from a code hosting service, such as GitHub or an internal server.
-
-Repository = A local copy of source code.
+Let's say, to rectify your horrifying mistake, you performed a `git revert` of your merge commit... In which case, I would ask you: _Why have you done this to yourself?_
 
 ## Don't revert your merge
 
