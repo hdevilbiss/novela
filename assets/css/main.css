@@ -1,5 +1,7 @@
 blockquote {
     background-color: #EEE;
+    border-radius: 5px;
+    color: #000;
     padding-bottom: 2rem;
     padding-left: 2rem;
     padding-right: 2rem;
@@ -13,6 +15,7 @@ blockquote p {
 }
 code {
     background-color: #EEE;
+    color: #000;
     border-radius: 5px;
     padding-left: 0.25rem;
     padding-right: 0.25rem;
