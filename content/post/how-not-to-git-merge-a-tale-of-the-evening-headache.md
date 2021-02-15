@@ -45,7 +45,9 @@ You will have to revert the revert to restore the document states to those intro
 
 `git log` to get the commit hash.
 
-`git revert abc` where `abc` is the commit hash
+`git cherry-pick <original commit sha>` to [reapply the original](https://stackoverflow.com/a/29975312/12621376) commit.
+
+`git revert abc` where `abc` is the commit hash.
 
 ## Never do this again
 
